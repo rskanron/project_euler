@@ -10,6 +10,7 @@ $num2 = 5;
 
 // how do we find this pattern?
 // first get the lowest common multiple ....
+// TODO: (this is not how you find lcm - happens to work for these inputs)
 $lcm = $num1 * $num2;
 // start from lower divisor
 $lastMultiple = 0;
