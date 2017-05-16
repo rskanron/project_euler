@@ -22,7 +22,7 @@ $startTime = microtime(true);
 
 
 
-// HERE IS ANOTHER .........................
+// HERE IS ANOTHER I ALSO FOUND ONLINE .........................
 $numberOne = 3;
 $numberTwo = 5;
 $endingIndex = 1000000;
