@@ -1,38 +1,39 @@
-<?
+<?php
 $startTime = microtime(true);
 
 $num1 = 3;
 $num2 = 5;
+$maxMultiple = 1000;
 
-// here is the pattern of increments between multiples of 3 and 5
-// 3213123 3213123
-// it repeats after they achieve the same multiple, which the first one is of course 3*5 = 15
+// here is the pattern of differences between multiples of 3 and 5
+// 3213123
+// it repeats between every common multiple
 
-// how do we find this pattern?
-// first get the lowest common multiple ....
-// TODO: (this is not how you find lcm - happens to work for these inputs)
-$lcm = $num1 * $num2;
-// start from lower divisor
-$lastMultiple = 0;
+// starting from an easy to find common multiple
 $pattern = array();
-// starting from first answer (num1*1) up to lcm
-for ($index = $num1; $index <= $lcm; $index++) {
-    // if is a multiple
-    if ($index % $num1 == 0 || $index % $num2 == 0) {
-		// store difference between this multiple and last multiple found
-		$pattern[] = $index - $lastMultiple;
-		$lastMultiple = $index;
-    }
-}
+$previousMultiple = $num1 * $num2;
+$testNumber = $previousMultiple;
+do {
+	$testNumber++;
+	
+    $multipleOfNum1 = $testNumber % $num1 == 0;
+	$multipleOfNum2 = $testNumber % $num2 == 0;
+	
+	// if either or both is a multiple of the next number
+    if ($multipleOfNum1 || $multipleOfNum2) {
+		// store difference between this multiple and last multiple found 
+		$pattern[] = $testNumber - $previousMultiple;
+		$previousMultiple = $testNumber;
+	}
+// if the last one revealed common multiples, end pattern creation
+} while (!($multipleOfNum1 && $multipleOfNum2));
 
-$maxMultiple = 1000000;
-
-$currentNumber = 0;
-$multiples = array();
-
+// iterate over the pattern and keep summing until the next multiple reaches the max
+$currentMultiple = 0;
+$sum = 0;
 $nextInPattern = $pattern[0];
-while ($maxMultiple > $currentNumber = $currentNumber + $nextInPattern) {
-	$multiples[] = $currentNumber;
+while ($maxMultiple > $currentMultiple = $currentMultiple + $nextInPattern) {
+	$sum += $currentMultiple;
 	$next = next($pattern);
 	if (!$next) {
 		reset($pattern);
@@ -41,6 +42,5 @@ while ($maxMultiple > $currentNumber = $currentNumber + $nextInPattern) {
 	$nextInPattern = $next;
 }
 
-$answer = array_sum($multiples);
-echo $answer . PHP_EOL;
-echo microtime(true) - $startTime;
+echo "The sum of all multiples of $num1 and $num2 up to $maxMultiple is $sum" . PHP_EOL;
+echo "Time taken = " . (microtime(true) - $startTime) . " ms";
